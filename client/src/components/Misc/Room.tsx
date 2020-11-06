@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
-import Chat from "./Chat";
-
 interface RoomProps {
-  role: "helping" | "seeking help";
+  children: React.ReactElement;
+  role: "seeker" | "supporter";
 }
 
 const Room = (props: RoomProps) => {
@@ -29,14 +28,14 @@ const Room = (props: RoomProps) => {
         </div>
       </div>
 
-      <Chat role={props.role} />
+      {props.children}
 
       <div className="flex flex-wrap h-screen w-1/4 bg-baseCream">
         <div className="m-auto text-center">
           <div>
             <button>Disconnect</button>
           </div>
-          {props.role === "seeking help" && (
+          {props.role === "seeker" && (
             <>
               <div>
                 <button>Report</button>

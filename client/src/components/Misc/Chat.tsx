@@ -2,69 +2,26 @@ import React, { FormEvent, useRef, useState } from "react";
 
 import SendIcon from "./SendIcon";
 
-interface ChatProps {
-  role: "helping" | "seeking help";
-}
-
 interface Messages {
   message: string;
-  byYou: boolean;
+  role: "seeker" | "supporter";
 }
 
-const sampleMessages: Messages[] = [
-  {
-    message:
-      "Consectetur elit dolore sunt amet ullamco pariatur culpa deserunt voluptate anim tempor reprehenderit. Exercitation dolor laborum dolore veniam dolor occaecat nisi qui est ipsum est.",
-    byYou: true,
-  },
-  {
-    message:
-      "Ad officia ullamco ipsum adipisicing pariatur anim. Ullamco exercitation voluptate dolore do pariatur dolore. Cupidatat dolor qui aliqua anim eu minim laborum anim proident.",
-    byYou: false,
-  },
-  {
-    message:
-      "In esse do consequat excepteur labore excepteur excepteur excepteur mollit sunt esse nostrud.",
-    byYou: true,
-  },
-  {
-    message:
-      "Laborum velit exercitation occaecat et ipsum occaecat nisi dolore sit occaecat magna.",
-    byYou: true,
-  },
-  {
-    message:
-      "Laborum velit exercitation occaecat et ipsum occaecat nisi dolore sit occaecat magna.",
-    byYou: true,
-  },
-  {
-    message:
-      "Cupidatat cillum magna consectetur ut aliquip in duis eu excepteur duis enim est.",
-    byYou: false,
-  },
-  {
-    message:
-      "Laborum velit exercitation occaecat et ipsum occaecat nisi dolore sit occaecat magna.",
-    byYou: true,
-  },
-  {
-    message:
-      "Laborum velit exercitation occaecat et ipsum occaecat nisi dolore sit occaecat magna.",
-    byYou: true,
-  },
-];
+interface ChatProps {
+  messages: Messages[];
+  role: "seeker" | "supporter";
+}
 
 const Chat = (props: ChatProps) => {
-  const [messages, setMessages] = useState<Messages[]>(sampleMessages);
+  const [messages, setMessages] = useState<Messages[]>(props.messages);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
   const onMessageSubmit = (e: FormEvent) => {
     e.preventDefault();
     const message = messageInputRef.current?.value;
-    console.log(message);
     setMessages((prevState: Messages[]) => [
       ...prevState,
-      { message: message!, byYou: true },
+      { message: message!, role: props.role },
     ]);
     messageInputRef.current!.value = "";
   };
@@ -75,10 +32,15 @@ const Chat = (props: ChatProps) => {
         <div className="mt-auto">
           <div className="flex flex-wrap bg-green-500 overflow-y-scroll max-h-9/10">
             {messages.map((message) => (
-              <div className="w-full flex">
+              <div
+                key={`${message.message.substring(0, 10)}${Math.random()}`}
+                className="w-full flex"
+              >
                 <div
                   className={`message ${
-                    message.byYou ? "byYouMessage" : "notByYouMessage"
+                    message.role === props.role
+                      ? "byYouMessage"
+                      : "notByYouMessage"
                   }`}
                 >
                   {message.message}
