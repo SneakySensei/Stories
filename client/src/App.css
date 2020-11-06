@@ -1,38 +1,25 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;700&family=Pacifico&display=swap");
+
+h1::after {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 1rem;
+  background: linear-gradient(90deg, #9ed3ba, #039191);
+  opacity: 0.7;
+  content: "";
+  mix-blend-mode: exclusion;
+  transform: translateY(-150%);
+  transition: transform 200ms ease-out, height 300ms ease-out;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1:hover::after {
+  transform: translateY(-95%);
+  height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* .section:hover {
+  filter: brightness(1.1);
+} */

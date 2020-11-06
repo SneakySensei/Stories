@@ -12,6 +12,11 @@ module.exports = {
         baseCream: "#DEC7B5",
         baseGreen: "#039191",
       },
+      fontSize: {
+        "7xl": "5rem",
+        "8xl": "6rem",
+        "9xl": "7rem",
+      },
     },
   },
   variants: {},
