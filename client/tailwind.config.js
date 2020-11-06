@@ -26,9 +26,14 @@ module.exports = {
         "1/5": "20vh",
         "4/5": "80vh",
         "9/10": "90vh",
+        fontSize: {
+          "7xl": "5rem",
+          "8xl": "6rem",
+          "9xl": "7rem",
+        },
       },
     },
+    variants: {},
+    plugins: [],
   },
-  variants: {},
-  plugins: [],
 };
