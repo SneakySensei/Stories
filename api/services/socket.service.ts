@@ -1,5 +1,5 @@
 import { Server } from "http";
-import * as socketIO from "socket.io";
+import socketIO from "socket.io";
 import { errors } from "../error/error.constant";
 
 export class SocketService {
@@ -9,7 +9,7 @@ export class SocketService {
 
   public initalize = async (expressServer: Server): Promise<void> => {
     try {
-      this.io = new socketIO.Server(expressServer);
+      this.io = new socketIO(expressServer);
       console.info(`Connected to Socket.IO on Port ${process.env.PORT}`);
     } catch (err) {
       console.error("Could not connect to Socket.IO Server");

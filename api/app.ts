@@ -54,7 +54,6 @@ Promise.all([
       .getIO()
       .on("connection", (socket) => {
         console.log("socket::connection -", socket.id, "has connected.");
-        socket.emit("your-id", socket.id);
         socketController(socket);
       });
   })
