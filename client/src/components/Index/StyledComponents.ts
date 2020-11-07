@@ -108,12 +108,11 @@ export const Landing = styled.div`
   }
 `;
 
-export const GoogleButton = styled.a`
+export const GoogleButton = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #4285f4;
   border-radius: 0.2rem;
   font-weight: bold;
   color: white;
@@ -140,7 +139,11 @@ export const GoogleButton = styled.a`
   &:active {
     filter: brightness(0.9) !important;
   }
-
+  &:disabled {
+    filter: none !important;
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
   .label {
     padding: 0 0.5rem;
   }
