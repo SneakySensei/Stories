@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import io from "socket.io-client";
 
 import Room from "../Misc/Room";
 import Chat from "../Misc/Chat";
 import Spinner from "../Misc/Spinner";
+import { TagsContext } from "../../context/tagsContext";
 
 interface Messages {
   message: string;
@@ -27,6 +28,8 @@ const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const [isWaiting, setIsWaiting] = useState<boolean>(true);
 
+  const tagsContext = useContext(TagsContext);
+
   const socket = useRef<any>();
 
   useEffect(() => {
@@ -34,7 +37,13 @@ const Hero = () => {
     socket.current = io.connect({
       query: { "x-auth-token": token },
     });
-    socket.current.emit("waiting-room", { role: "seeker" });
+    let data: any = {
+      role: "seeker",
+    };
+    tagsContext.tags.forEach((tag: any) => {
+      data[tag.name] = tag.isSelected;
+    });
+    socket.current.emit("waiting-room", data);
     socket.current.on("send-to-seeker", (data: { message: string }) => {
       console.log(`supporter says ${data.message}`);
       setMessages((prevState) => [

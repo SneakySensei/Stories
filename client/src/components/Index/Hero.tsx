@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createBrowserHistory } from "history";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 import { getGAuth } from "../../services/axios";
 import { ReactComponent as LandingImg } from "../../assets/landingRight.svg";
@@ -13,7 +12,7 @@ const Hero = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [role, setRole] = useState<"seeker" | "supporter" | null>();
 
-  let history = createBrowserHistory();
+  let history = useHistory();
 
   useEffect(() => {
     const tokenx64 = window.location.search.substring(
@@ -25,7 +24,7 @@ const Hero = () => {
     let token = sessionStorage.getItem("token");
     token && setIsAuth(true);
     isAuth && history.replace("/");
-  });
+  }, [history]);
 
   const GAuthHandler = () => {
     if (isAuth) {
@@ -40,16 +39,13 @@ const Hero = () => {
     setRole(role);
   };
 
-  let tags;
-  const submitTags = (_tags: any) => {
-    tags = _tags;
-    console.log(tags, "from index hero");
-    history.replace(`/${role}`);
+  const submitTags = () => {
+    history.push(`/${role}`);
   };
 
   return (
     <>
-      {role && <Modal role={role} submitTags={(tags) => submitTags(tags)} />}
+      {role && <Modal role={role} submitTags={submitTags} />}
       <Landing>
         <div className="left-section">
           <div className="logo">Stories</div>

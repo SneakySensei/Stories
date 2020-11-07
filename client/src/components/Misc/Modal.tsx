@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useContext } from "react";
+
+import { TagsContext } from "../../context/tagsContext";
 
 interface ModalProps {
   role: "seeker" | "supporter";
-  submitTags: (tags: Tag[]) => void;
+  submitTags: () => void;
 }
 
 interface Tag {
@@ -12,6 +13,8 @@ interface Tag {
 }
 
 const Modal = (props: ModalProps) => {
+  const tagsContext = useContext(TagsContext);
+
   const tags: Tag[] = [
     { name: "suicide-prevention", isSelected: false },
     { name: "relationship-advice", isSelected: false },
@@ -36,7 +39,8 @@ const Modal = (props: ModalProps) => {
   };
 
   const onSubmitHandler = () => {
-    props.submitTags(allTags);
+    props.submitTags();
+    tagsContext.setTags(allTags);
   };
 
   return (

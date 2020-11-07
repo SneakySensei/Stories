@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import "./App.css";
 import "./tailwind.css";
@@ -13,12 +13,10 @@ const App = () => {
   useEffect(() => {
     let token = sessionStorage.getItem("token");
     token && setIsAuth(true);
-  });
+  }, []);
 
   let routes = (
     <Switch>
-      <Redirect from="/supporter" to="/" exact />
-      <Redirect from="/seeker" to="/" exact />
       <Route path="/" exact component={Index} />
     </Switch>
   );
@@ -31,7 +29,7 @@ const App = () => {
     </Switch>
   );
 
-  return isAuth ? authRoutes : routes;
+  return !isAuth ? routes : authRoutes;
 };
 
 export default App;
