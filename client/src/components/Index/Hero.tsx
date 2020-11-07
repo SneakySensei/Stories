@@ -9,7 +9,7 @@ import { Landing, GoogleButton } from "./StyledComponents";
 import Modal from "../Misc/Modal";
 
 const Hero = () => {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [isAuth, setIsAuth] = useState<boolean>(true);
   const [role, setRole] = useState<"seeker" | "supporter" | null>();
 
   let history = useHistory();
