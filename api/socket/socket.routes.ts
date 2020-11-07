@@ -50,11 +50,11 @@ export const socketController = async (socket: socketIO.Socket) => {
     callback(true);
   });
   socket.on("send-to-supporter", (data: { message: string }) => {
-    console.log("send-to-supporter", data.message);
+    console.log("sent-from-seeker::", data.message);
     socket.to(socket.id).broadcast.emit("sent-from-seeker", data);
   });
   socket.on("send-to-seeker", (data: { message: string }) => {
-    console.log("send-to-seeker", data.message);
+    console.log("sent-from-supporter::", data.message);
     socket.to(socket.id).broadcast.emit("sent-from-supporter", data);
   });
   // socket.on("callback-event", (data, callback) => {

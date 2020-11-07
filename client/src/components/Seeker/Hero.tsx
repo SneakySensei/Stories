@@ -31,6 +31,7 @@ const Hero = () => {
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
+  let supporterId: string;
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -45,6 +46,7 @@ const Hero = () => {
     });
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { supporter: string }) => {
+      supporterId = data.supporter;
       console.log(data.supporter, "is a supporter want to join room");
       socket.current.emit("join-room", data.supporter, (data: boolean) => {
         console.log("room match", data);
