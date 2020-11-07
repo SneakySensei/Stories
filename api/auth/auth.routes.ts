@@ -21,7 +21,7 @@ async function handlePostAuthGenerate(
     if (!url) {
       throw errors.INTERNAL_SERVER_ERROR;
     } else {
-      res.redirect(url);
+      res.json({ url });
     }
   } catch (err) {
     next(err);
