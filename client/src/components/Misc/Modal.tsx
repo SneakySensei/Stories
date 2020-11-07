@@ -36,13 +36,19 @@ const Modal = (props: ModalProps) => {
 
   return (
     <div className="fixed bg-black bg-opacity-50 w-screen h-screen grid place-items-center z-50">
-      <div className="flex flex-col items-center bg-backgroundLight w-11/12 lg:w-5/12">
-        <h2 className="text-center text-2xl">
+      <div className="flex flex-col bg-background w-11/12 lg:w-5/12 p-4 rounded-lg">
+        <h2 className="text-center text-2xl mb-2">
           What do you want to talk about?
         </h2>
         {allTags.map((tag) => (
-          <div onClick={() => onToggleTag(tag.name)} key={tag.name}>
-            <div>{tag.name}</div>
+          <div
+            onClick={() => onToggleTag(tag.name)}
+            key={tag.name}
+            className={`rounded-md mb-2 px-4 py-2 shadow-card cursor-pointer select-none ${
+              tag.isSelected ? "bg-primary text-background" : "bg-accent"
+            }`}
+          >
+            {tag.name}
           </div>
         ))}
       </div>

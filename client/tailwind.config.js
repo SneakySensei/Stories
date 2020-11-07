@@ -7,10 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        backgroundLight: "#F2F2F2",
-        accentGreen: "#87BFA5",
-        baseCream: "#DEC7B5",
-        baseGreen: "#039191",
+        background: "#F2F2F2",
+        primary: "#7CB3BE",
+        accent: "#DDE3E9",
       },
       height: {
         "1/10": "10%",
@@ -31,6 +30,10 @@ module.exports = {
         "7xl": "5rem",
         "8xl": "6rem",
         "9xl": "7rem",
+      },
+      boxShadow: {
+        card:
+          "0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0,0,0,.12);",
       },
     },
     variants: {},
