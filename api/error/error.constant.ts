@@ -23,4 +23,8 @@ export const errors = {
     httpStatus: 500,
     message: "Could Not Connect to MongoDB.",
   },
+  GOOGLE_OAUTH_ERROR: {
+    httpStatus: 401,
+    message: "Google OAuth Error.",
+  },
 };
