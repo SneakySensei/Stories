@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createBrowserHistory } from "history";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { getGAuth } from "../../services/axios";
 import { ReactComponent as LandingImg } from "../../assets/landingRight.svg";
@@ -13,6 +13,8 @@ const Hero = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [role, setRole] = useState<"seeker" | "supporter" | null>();
 
+  let history = createBrowserHistory();
+
   useEffect(() => {
     const tokenx64 = window.location.search.substring(
       7,
@@ -22,7 +24,6 @@ const Hero = () => {
     setToken && sessionStorage.setItem("token", setToken);
     let token = sessionStorage.getItem("token");
     token && setIsAuth(true);
-    let history = createBrowserHistory();
     isAuth && history.replace("/");
   });
 
@@ -39,9 +40,16 @@ const Hero = () => {
     setRole(role);
   };
 
+  let tags;
+  const submitTags = (_tags: any) => {
+    tags = _tags;
+    console.log(tags, "from index hero");
+    history.replace(`/${role}`);
+  };
+
   return (
     <>
-      {role && <Modal role={role} />}
+      {role && <Modal role={role} submitTags={(tags) => submitTags(tags)} />}
       <Landing>
         <div className="left-section">
           <div className="logo">Stories</div>

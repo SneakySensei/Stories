@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface ModalProps {
   role: "seeker" | "supporter";
+  submitTags: (tags: Tag[]) => void;
 }
 
 interface Tag {
@@ -34,6 +35,10 @@ const Modal = (props: ModalProps) => {
     );
   };
 
+  const onSubmitHandler = () => {
+    props.submitTags(allTags);
+  };
+
   return (
     <div className="fixed bg-black bg-opacity-50 w-screen h-screen grid place-items-center z-50">
       <div className="flex flex-col items-center bg-backgroundLight w-11/12 lg:w-5/12">
@@ -45,6 +50,7 @@ const Modal = (props: ModalProps) => {
             <div>{tag.name}</div>
           </div>
         ))}
+        <button onClick={onSubmitHandler}>submit</button>
       </div>
     </div>
   );
