@@ -1,25 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;700&family=Pacifico&display=swap");
 
-h1::after {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 1rem;
-  background: linear-gradient(90deg, #9ed3ba, #039191);
-  opacity: 0.7;
-  content: "";
-  mix-blend-mode: exclusion;
-  transform: translateY(-150%);
-  transition: transform 200ms ease-out, height 300ms ease-out;
+@keyframes zoom {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-
-h1:hover::after {
-  transform: translateY(-95%);
-  height: 100%;
-}
-
-/* .section:hover {
-  filter: brightness(1.1);
-} */
