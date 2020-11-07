@@ -3,6 +3,7 @@ import io from "socket.io-client";
 
 import Room from "../Misc/Room";
 import Chat from "../Misc/Chat";
+import Spinner from "../Misc/Spinner";
 
 interface Messages {
   message: string;
@@ -24,10 +25,16 @@ const sampleMessages: Messages[] = [
 
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
+  const [isWaiting, setIsWaiting] = useState<boolean>(true);
+
   const socket = useRef<any>();
 
   useEffect(() => {
-    socket.current = io.connect();
+    const token = sessionStorage.getItem("token");
+    socket.current = io.connect({
+      query: { "x-auth-token": token },
+    });
+    socket.current.emit("waiting-room", { role: "supporter" });
     socket.current.on("send-to-supporter", (data: { message: string }) => {
       console.log(`seeker says ${data.message}`);
       setMessages((prevState) => [
@@ -48,7 +55,11 @@ const Hero = () => {
   return (
     <div>
       <Room role="supporter">
-        <Chat messages={messages} role="supporter" onSubmit={sendMessage} />
+        {isWaiting ? (
+          <Spinner />
+        ) : (
+          <Chat messages={messages} role="supporter" onSubmit={sendMessage} />
+        )}
       </Room>
     </div>
   );
