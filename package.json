@@ -12,7 +12,9 @@
     "build:server": "npx tsc",
     "build:dev": "npx tsc --watch",
     "build:client": "cd client && yarn build",
-    "postinstall": "cd client && yarn"
+    "postinstall": "cd client && yarn",
+    "flask:cmd": "set FLASK_APP=./ml/app.py && flask run",
+    "flask:bash": "export FLASK_APP=./ml/app.py && flask run"
   },
   "repository": {
     "type": "git",
