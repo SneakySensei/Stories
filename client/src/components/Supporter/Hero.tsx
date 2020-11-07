@@ -46,9 +46,12 @@ const Hero = () => {
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { seeker: string }) => {
       console.log(data.seeker, " is seeker and want to join room");
-      socket.current.emit("join-room", data.seeker);
+      socket.current.emit("join-room", data.seeker, (data: boolean) => {
+        console.log("room match", data);
+        setIsWaiting(false);
+      });
     });
-    socket.current.on("send-to-supporter", (data: { message: string }) => {
+    socket.current.on("sent-from-seeker", (data: { message: string }) => {
       console.log(`seeker says ${data.message}`);
       setMessages((prevState) => [
         ...prevState,

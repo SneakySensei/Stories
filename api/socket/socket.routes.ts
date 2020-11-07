@@ -21,7 +21,6 @@ export const socketController = async (socket: socketIO.Socket) => {
   await socket.on(
     "waiting-room",
     async (data: { role: "seeker" | "supporter"; [x: string]: string }) => {
-      console.log("%o", data);
       cache.select(
         data.role === "seeker" ? database.seekers : database.supporters
       );
@@ -34,9 +33,9 @@ export const socketController = async (socket: socketIO.Socket) => {
         console.log(
           `${user?.email}::${data.role}::waiting-room - ${socket.id} is waiting.`
         );
-      const { seeker, supporter } = await getMatchProfiles();
-      if (!seeker || supporter.length == 0) return;
-      const { seekerMatch, supporterMatch } = getRoomPair(seeker, supporter);
+      const { seeker, supporters } = await getMatchProfiles();
+      if (!seeker || supporters.length === 0) return;
+      const { seekerMatch, supporterMatch } = getRoomPair(seeker, supporters);
       globalIO.to(seekerMatch).emit("join-room", {
         supporter: supporterMatch,
       });
@@ -49,6 +48,14 @@ export const socketController = async (socket: socketIO.Socket) => {
   socket.on("join-room", (data, callback) => {
     socket.join(data);
     callback(true);
+  });
+  socket.on("send-to-supporter", (data: { message: string }) => {
+    console.log("send-to-supporter", data.message);
+    socket.to(socket.id).broadcast.emit("sent-from-seeker", data);
+  });
+  socket.on("send-to-seeker", (data: { message: string }) => {
+    console.log("send-to-seeker", data.message);
+    socket.to(socket.id).broadcast.emit("sent-from-supporter", data);
   });
   // socket.on("callback-event", (data, callback) => {
   //   callback();
