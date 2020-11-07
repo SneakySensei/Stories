@@ -45,7 +45,15 @@ const Hero = () => {
 
   return (
     <>
-      {role && <Modal role={role} submitTags={submitTags} />}
+      {role && (
+        <Modal
+          role={role}
+          submitTags={submitTags}
+          onModalClose={() => {
+            setRole(null);
+          }}
+        />
+      )}
       <Landing>
         <div className="left-section">
           <div className="logo">Stories</div>
@@ -79,6 +87,7 @@ const Hero = () => {
               {isAuth ? "Log Out" : "Sign in with Google"}
             </span>
           </GoogleButton>
+          {!isAuth && <span className="pt-2">Please log in to start</span>}
         </div>
         <div className="right-section">
           <TopImg className="topArt" />

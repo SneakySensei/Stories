@@ -5,12 +5,23 @@ import { TagsContext } from "../../context/tagsContext";
 interface ModalProps {
   role: "seeker" | "supporter";
   submitTags: () => void;
+  onModalClose: () => void;
 }
 
 interface Tag {
   name: string;
   isSelected: boolean;
 }
+
+const humanReadableTagNames = [
+  "Suicidal Thoughts",
+  "Relationship Advice",
+  "Family Issues",
+  "Substance Abuse",
+  "Gender and Sexual Indentity",
+  "Anxious and Depressive Thoughts",
+  "Academic Issues",
+];
 
 const Modal = (props: ModalProps) => {
   const tagsContext = useContext(TagsContext);
@@ -38,29 +49,46 @@ const Modal = (props: ModalProps) => {
     );
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (evt: React.MouseEvent) => {
+    evt.stopPropagation();
     props.submitTags();
     tagsContext.setTags(allTags);
   };
 
   return (
-    <div className="fixed bg-black bg-opacity-50 w-screen h-screen grid place-items-center z-50">
-      <div className="flex flex-col bg-background w-11/12 lg:w-5/12 p-4 rounded-lg">
+    <div
+      className="fixed bg-black bg-opacity-50 w-screen h-screen grid place-items-center z-50"
+      onClick={props.onModalClose}
+    >
+      <div
+        className="flex flex-col bg-background w-11/12 lg:w-5/12 p-4 rounded-lg"
+        onClick={(evt: React.MouseEvent) => {
+          evt.stopPropagation();
+        }}
+      >
         <h2 className="text-center text-2xl mb-2">
           What do you want to talk about?
         </h2>
-        {allTags.map((tag) => (
+        {allTags.map((tag, index) => (
           <div
-            onClick={() => onToggleTag(tag.name)}
+            onClick={(evt: React.MouseEvent) => {
+              evt.stopPropagation();
+              onToggleTag(tag.name);
+            }}
             key={tag.name}
             className={`rounded-md mb-2 px-4 py-2 shadow-card cursor-pointer select-none ${
               tag.isSelected ? "bg-primary text-background" : "bg-accent"
             }`}
           >
-            {tag.name}
+            {humanReadableTagNames[index]}
           </div>
         ))}
-        <button onClick={onSubmitHandler}>submit</button>
+        <button
+          className="bg-secondary px-4 py-2 rounded-lg text-background font-bold self-center hover:bg-secondaryAccent"
+          onClick={onSubmitHandler}
+        >
+          Continue
+        </button>
       </div>
     </div>
   );
