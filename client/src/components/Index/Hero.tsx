@@ -60,6 +60,7 @@ const Landing = styled.div`
   .right-section {
     position: relative;
     background: linear-gradient(220deg, #a6dce2, #72aab6);
+    height: 100%;
 
     svg {
       width: 100%;
@@ -82,6 +83,31 @@ const Landing = styled.div`
       color: #f2f2f2;
     }
   }
+
+  @media screen and (max-width: 990px) {
+    display: block;
+
+    .left-section {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      top: 1rem;
+      bottom: 4rem;
+      z-index: 100;
+      background-color: #fffe;
+    }
+
+    .right-section {
+      .logo {
+        z-index: 1000;
+        color: #2c2c2c;
+      }
+      .art {
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+    }
+  }
 `;
 
 const GoogleButton = styled.a`
@@ -102,6 +128,14 @@ const GoogleButton = styled.a`
     vertical-align: middle;
     width: 42px;
     height: 42px;
+  }
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.9) !important;
   }
 
   .label {
@@ -127,7 +161,7 @@ const Hero = () => {
         </GoogleButton>
       </div>
       <div className="right-section">
-        <TopImg />
+        <TopImg className="topArt" />
         <LandingImg className="art" />
         <div className="logo">Stories</div>
       </div>
