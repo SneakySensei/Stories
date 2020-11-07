@@ -8,21 +8,18 @@ interface Messages {
 }
 
 interface ChatProps {
-  messages: Messages[];
   role: "seeker" | "supporter";
+  onSubmit: (message: string) => void;
+  messages: Messages[];
 }
 
 const Chat = (props: ChatProps) => {
-  const [messages, setMessages] = useState<Messages[]>(props.messages);
   const messageInputRef = useRef<HTMLInputElement>(null);
 
   const onMessageSubmit = (e: FormEvent) => {
     e.preventDefault();
     const message = messageInputRef.current?.value;
-    setMessages((prevState: Messages[]) => [
-      ...prevState,
-      { message: message!, role: props.role },
-    ]);
+    props.onSubmit(message!);
     messageInputRef.current!.value = "";
   };
 
@@ -31,7 +28,7 @@ const Chat = (props: ChatProps) => {
       <div className="flex w-full h-screen">
         <div className="mt-auto">
           <div className="flex flex-wrap bg-green-500 overflow-y-scroll max-h-9/10">
-            {messages.map((message) => (
+            {props.messages.map((message) => (
               <div
                 key={`${message.message.substring(0, 10)}${Math.random()}`}
                 className="w-full flex"

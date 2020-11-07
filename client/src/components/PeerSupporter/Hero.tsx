@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 
 import Room from "../Misc/Room";
@@ -23,19 +23,32 @@ const sampleMessages: Messages[] = [
 ];
 
 const Hero = () => {
+  const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const socket = useRef<any>();
 
   useEffect(() => {
     socket.current = io.connect();
-    socket.current.on("test", (data: any) => {
-      console.log(data);
+    socket.current.on("send-to-supporter", (data: { message: string }) => {
+      console.log(`seeker says ${data.message}`);
+      setMessages((prevState) => [
+        ...prevState,
+        { message: data.message, role: "seeker" },
+      ]);
     });
   }, []);
+
+  const sendMessage = (message: string) => {
+    console.log(message, "from helper component");
+    socket.current.emit("send-to-seeker", { message }, () => {
+      console.log(`sent ${message} to seeker`);
+    });
+    setMessages((prevState) => [...prevState, { message, role: "supporter" }]);
+  };
 
   return (
     <div>
       <Room role="supporter">
-        <Chat messages={sampleMessages} role="supporter" />
+        <Chat messages={messages} role="supporter" onSubmit={sendMessage} />
       </Room>
     </div>
   );
