@@ -88,12 +88,14 @@ export const Landing = styled.div`
       left: 1rem;
       right: 1rem;
       top: 1rem;
-      bottom: 1rem;
+      height: fit-content;
+      border-radius: 1rem;
       z-index: 100;
       background-color: #fffe;
     }
 
     .right-section {
+      height: inherit;
       .logo {
         z-index: 1000;
         color: #2c2c2c;
@@ -117,6 +119,11 @@ export const GoogleButton = styled.a`
   color: white;
   cursor: pointer;
   margin: 2rem 0;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -o-user-select: none;
 
   .icon {
     background: url(${googleNormal}) transparent 50% no-repeat;
