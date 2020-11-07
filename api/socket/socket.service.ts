@@ -2,6 +2,8 @@ import { verify } from "jsonwebtoken";
 import { promisify } from "util";
 import { CacheService } from "../services/redis.service";
 import { database, redisUserSchema } from "./socket.schema";
+import * as toxicity from "@tensorflow-models/toxicity";
+
 export const getUserIdentity = (token: string) => {
   const identity = verify(token, process.env.JWT_SECRET!);
   return identity;
@@ -73,4 +75,18 @@ export const getRoomPair = (
     seekerMatch: seeker.id,
     supporterMatch: supporters[maxCompatibilityIndex].id,
   };
+};
+
+export const getToxicity = async (message: string) => {
+  const model = await toxicity.load(0.4, [
+    "identity_attack",
+    "insult",
+    "obscene",
+    "severe_toxicity",
+    "sexual_explicit",
+    "threat",
+    "toxicity",
+  ]);
+  const predictions = await model.classify([`${message}`]);
+  predictions.forEach((e) => {});
 };
