@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { getGAuth } from "../../services/axios";
 import { ReactComponent as LandingImg } from "../../assets/landingRight.svg";
 import { ReactComponent as TopImg } from "../../assets/top.svg";
-
 import { Landing, GoogleButton } from "./StyledComponents";
 
 const Hero = () => {
@@ -16,10 +15,12 @@ const Hero = () => {
       7,
       window.location.search.length
     );
-    const token = atob(tokenx64);
-    sessionStorage.setItem("token", token);
+    const setToken = atob(tokenx64);
+    setToken && sessionStorage.setItem("token", setToken);
+    let token = sessionStorage.getItem("token");
+    token && setIsAuth(true);
     let history = createBrowserHistory();
-    history.replace("/");
+    isAuth && history.replace("/");
   });
 
   const GAuthHandler = () => {
@@ -30,14 +31,27 @@ const Hero = () => {
     <Landing>
       <div className="left-section">
         <h1>Hi, how are you feeling today?</h1>
-        <Link to="/seeker" className="link">
-          <div>I need to talk to someone</div>
-        </Link>
-        <Link to="/peer-supporter" className="link">
-          <div>I'm feeling helpful</div>
-        </Link>
+        <button className="link" disabled={!isAuth}>
+          {isAuth ? (
+            <Link to="/seeker">I need to talk to someone</Link>
+          ) : (
+            <p className="cursor-not-allowed">I need to talk to someone</p>
+          )}
+        </button>
+        <button className="link" disabled={!isAuth}>
+          {isAuth ? (
+            <Link to="/supporter">I'm feeling helpful</Link>
+          ) : (
+            <p className="cursor-not-allowed">I'm feeling helpful</p>
+          )}
+        </button>
 
-        <GoogleButton onClick={GAuthHandler}>
+        <GoogleButton
+          onClick={GAuthHandler}
+          style={{ backgroundColor: isAuth ? "#35AC55" : "#4285f4" }}
+          disabled={isAuth}
+          className="focus:outline-none outline-none"
+        >
           <span className="icon"></span>
           <span className="label">
             {isAuth ? "Signed in" : "Sign in with Google"}
