@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accentCream: "#d4d4d4",
+        backgroundLight: "#F2F2F2",
         accentGreen: "#87BFA5",
         baseCream: "#DEC7B5",
         baseGreen: "#039191",
@@ -26,11 +26,11 @@ module.exports = {
         "1/5": "20vh",
         "4/5": "80vh",
         "9/10": "90vh",
-        fontSize: {
-          "7xl": "5rem",
-          "8xl": "6rem",
-          "9xl": "7rem",
-        },
+      },
+      fontSize: {
+        "7xl": "5rem",
+        "8xl": "6rem",
+        "9xl": "7rem",
       },
     },
     variants: {},

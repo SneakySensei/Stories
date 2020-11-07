@@ -12,13 +12,24 @@ export const Landing = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
     position: relative;
     background-color: #f2f2f2;
     padding: 1rem 1rem 1rem 1rem;
 
+    .logo {
+      font-family: "Pacifico";
+      font-size: 4rem;
+      text-align: center;
+      margin-top: 2rem;
+      animation: zoom 400ms ease-out;
+      color: #2c2c2c;
+      display: none;
+    }
+
     h1 {
       text-align: center;
-      margin: 8rem 0 5rem 0;
+      /* margin: 8rem 0 5rem 0; */
       font-size: 1.7rem;
       font-weight: bold;
       padding: 0 1rem;
@@ -29,7 +40,7 @@ export const Landing = styled.div`
       position: relative;
       z-index: 0;
       padding: 0 0.5rem;
-      margin-bottom: 3rem;
+      /* margin-bottom: 3rem; */
       cursor: pointer;
     }
 
@@ -117,7 +128,6 @@ export const GoogleButton = styled.button`
   font-weight: bold;
   color: white;
   cursor: pointer;
-  margin: 2rem 0;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
