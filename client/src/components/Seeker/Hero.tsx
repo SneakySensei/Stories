@@ -44,6 +44,10 @@ const Hero = () => {
       data[tag.name] = tag.isSelected;
     });
     socket.current.emit("waiting-room", data);
+    socket.current.on("join-room", (data: { supporter: string }) => {
+      console.log(data.supporter, "is a supporter want to join room");
+      socket.current.emit("join-room", data.supporter);
+    });
     socket.current.on("send-to-seeker", (data: { message: string }) => {
       console.log(`supporter says ${data.message}`);
       setMessages((prevState) => [

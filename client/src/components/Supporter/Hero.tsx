@@ -38,12 +38,16 @@ const Hero = () => {
       query: { "x-auth-token": token },
     });
     let data: any = {
-      role: "seeker",
+      role: "supporter",
     };
     tagsContext.tags.forEach((tag: any) => {
       data[tag.name] = tag.isSelected;
     });
     socket.current.emit("waiting-room", data);
+    socket.current.on("join-room", (data: { seeker: string }) => {
+      console.log(data.seeker, " is seeker and want to join room");
+      socket.current.emit("join-room", data.seeker);
+    });
     socket.current.on("send-to-supporter", (data: { message: string }) => {
       console.log(`seeker says ${data.message}`);
       setMessages((prevState) => [

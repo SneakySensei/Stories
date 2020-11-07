@@ -8,17 +8,29 @@ export const getUserIdentity = (token: string) => {
 };
 
 export const getMatchProfiles = async (): Promise<{
-  seeker: redisUserSchema;
+  seeker: redisUserSchema | null;
   supporter: Array<redisUserSchema>;
 }> => {
   const cache = CacheService.getInstance().getCache();
   cache.select(database.seekers);
   const seekers = await promisify(cache.keys).bind(cache)("*");
+  if (!seekers) {
+    return {
+      seeker: null,
+      supporter: [],
+    };
+  }
   const lastSeeker = (await promisify(cache.hgetall).bind(cache)(
     seekers[seekers.length - 1]
   )) as unknown;
   cache.select(database.supporters);
   const supporters = await promisify(cache.keys).bind(cache)("*");
+  if (supporters.length == 0) {
+    return {
+      seeker: null,
+      supporter: [],
+    };
+  }
   let supporterList: any[] = [];
   const result = supporters.map(async (ele) => {
     supporterList.push(await promisify(cache.hgetall).bind(cache)(ele));
