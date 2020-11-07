@@ -7,9 +7,10 @@ def createRoomPair():
   req_data = request.get_json()
   
   # List of unpaired users in lobby
-  userLobby = req_data['users']
+  seeker = req_data['seeker']
+  supporterList = req_data['supporters']
 
   # CALL THE PAIRING FUNCTION HERE
-  #UNCOMMENT seekerID, supporterID, matchedTags = createPair(userLobby)
+  #UNCOMMENT seekerID, supporterID, matchedTags = createPair(seeker, supporterList)
 
-  return {"seeker": "seekerID", "supporter": "supporterID", "matchedTags": []}, 200
+  return {"seeker": seeker['id'], "supporters": supporterList, "matchedTags": []}, 200
