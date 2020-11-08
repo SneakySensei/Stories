@@ -16,6 +16,7 @@ import {
 interface Messages {
   message: string;
   role: "seeker" | "supporter";
+  isToxic?: boolean;
 }
 
 const sampleMessages: Messages[] = [
@@ -39,7 +40,7 @@ const randomNameConfig: Config = {
 
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
-  const [isWaiting, setIsWaiting] = useState<boolean>(true);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
   const [supporterId, setSupporterId] = useState<string>();
 
   const tagsContext = useContext(TagsContext);
@@ -47,12 +48,7 @@ const Hero = () => {
   const socket = useRef<any>();
 
   // Random names generated
-  const [myName, setMyName] = useState<string>(
-    uniqueNamesGenerator(randomNameConfig)
-  );
-  const [otherName, setOtherName] = useState<string>(
-    uniqueNamesGenerator(randomNameConfig)
-  );
+  const [myName] = useState<string>(uniqueNamesGenerator(randomNameConfig));
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -82,6 +78,7 @@ const Hero = () => {
         setIsWaiting(false);
       });
       socket.current.on("close-room", () => {
+        alert("You're being disconnected");
         window.location.pathname = "/";
       });
     });
@@ -92,10 +89,13 @@ const Hero = () => {
         console.log(`supporter is toxic ${data.isToxic}`);
         setMessages((prevState) => [
           ...prevState,
-          { message: data.message, role: "supporter" },
+          { message: data.message, role: "supporter", isToxic: data.isToxic },
         ]);
       }
     );
+    window.addEventListener("beforeunload", () => {
+      socket.current.emit("close-room", { otherUser: supporterId });
+    });
   }, []);
 
   const sendMessage = (message: string) => {
@@ -103,12 +103,12 @@ const Hero = () => {
     socket.current.emit("send-to-supporter", { message }, () => {
       console.log(`sent ${message} to supporter`);
     });
-    socket.current.emit("test", "thisis test message");
     setMessages((prevState) => [...prevState, { message, role: "seeker" }]);
   };
 
   const onDisconnectHandler = () => {
     console.log("on disconnect", supporterId);
+    alert("You're being disconnected");
     socket.current.emit("close-room", { otherUser: supporterId });
     window.location.pathname = "/";
   };

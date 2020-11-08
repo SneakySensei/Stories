@@ -1,12 +1,5 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BigHead } from "@bigheads/core";
-import {
-  uniqueNamesGenerator,
-  Config,
-  adjectives,
-  colors,
-  animals,
-} from "unique-names-generator";
 
 import styled from "styled-components";
 
@@ -74,7 +67,10 @@ const RoomContainer = styled.div`
       text-align: center;
       color: #fff;
       background-color: #212121;
-      position: relative;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
 
       svg {
         position: absolute;
@@ -97,6 +93,7 @@ const RoomContainer = styled.div`
     }
     .chatContainer {
       flex: 1;
+      height: inherit;
     }
 
     .disabled {

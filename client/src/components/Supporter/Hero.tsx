@@ -44,12 +44,7 @@ const Hero = () => {
   let seekerId: string;
 
   // Random names generated
-  const [myName, setMyName] = useState<string>(
-    uniqueNamesGenerator(randomNameConfig)
-  );
-  const [otherName, setOtherName] = useState<string>(
-    uniqueNamesGenerator(randomNameConfig)
-  );
+  const [myName] = useState<string>(uniqueNamesGenerator(randomNameConfig));
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -87,7 +82,11 @@ const Hero = () => {
       ]);
     });
     socket.current.on("close-room", () => {
+      alert("You're being disconnected");
       window.location.pathname = "/";
+    });
+    window.addEventListener("beforeunload", () => {
+      socket.current.emit("close-room", { otherUser: seekerId });
     });
   }, []);
 
@@ -101,6 +100,7 @@ const Hero = () => {
 
   const onDisconnectHandler = () => {
     console.log("on disconnect");
+    alert("You're being disconnected");
     socket.current.emit("close-room", { otherUser: seekerId });
     window.location.pathname = "/";
   };

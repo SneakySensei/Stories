@@ -1,10 +1,11 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef } from "react";
 
 import SendIcon from "./SendIcon";
 
 interface Messages {
   message: string;
   role: "seeker" | "supporter";
+  isToxic?: boolean;
 }
 
 interface ChatProps {
@@ -31,7 +32,7 @@ const Chat = (props: ChatProps) => {
   }, [props]);
 
   return (
-    <div className="chatContainer flex flex-col justify-end w-full h-full bg-background">
+    <div className="chatContainer flex flex-col justify-end w-full h-screen bg-background">
       <div
         className="flex flex-1 flex-col bg-background overflow-y-scroll"
         id="chatDiv"
@@ -39,15 +40,22 @@ const Chat = (props: ChatProps) => {
         {props.messages.map((message) => (
           <div
             key={`${message.message.substring(0, 10)}${Math.random()}`}
-            className="chat-msg w-full flex"
+            className="chat-msg w-full flex flex-col"
           >
-            <div
-              className={`message ${
+            <button
+              className={`message focus:outline-none ${
+                message.isToxic ? "blurred" : ""
+              } ${
                 message.role === props.role ? "byYouMessage" : "notByYouMessage"
               }`}
             >
               {message.message}
-            </div>
+            </button>
+            {message.isToxic && (
+              <div className="text-red-600 text-sm font-bold ml-8 -mt-2">
+                Censored! Tap to view
+              </div>
+            )}
           </div>
         ))}
       </div>

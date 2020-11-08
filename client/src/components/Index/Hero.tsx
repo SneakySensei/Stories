@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import { useHistory } from "react-router-dom";
 
 import { getGAuth } from "../../services/axios";
 import { ReactComponent as LandingImg } from "../../assets/landingRight.svg";
@@ -13,6 +14,7 @@ const Hero = () => {
   const [role, setRole] = useState<"seeker" | "supporter" | null>();
 
   let history = useHistory();
+  let bHistory = createBrowserHistory();
 
   useEffect(() => {
     const tokenx64 = window.location.search.substring(
@@ -23,8 +25,8 @@ const Hero = () => {
     setToken && sessionStorage.setItem("token", setToken);
     let token = sessionStorage.getItem("token");
     token && setIsAuth(true);
-    isAuth && history.replace("/");
-  }, [history]);
+    isAuth && bHistory.replace("/");
+  }, [history, bHistory]);
 
   const GAuthHandler = () => {
     if (isAuth) {
