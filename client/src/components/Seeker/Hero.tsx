@@ -41,6 +41,7 @@ const randomNameConfig: Config = {
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const [isWaiting, setIsWaiting] = useState<boolean>(true);
+  const [supporterId, setSupporterId] = useState<string>();
 
   const tagsContext = useContext(TagsContext);
 
@@ -67,16 +68,27 @@ const Hero = () => {
     });
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { supporter: string }) => {
+      setSupporterId(data.supporter);
       console.log(data.supporter, "is a supporter want to join room");
-      socket.current.emit("join-room", data.supporter);
+      socket.current.emit("join-room", data.supporter, (data: boolean) => {
+        console.log("room match", data);
+        setIsWaiting(false);
+      });
+      socket.current.on("close-room", () => {
+        window.location.pathname = "/";
+      });
     });
-    socket.current.on("send-to-seeker", (data: { message: string }) => {
-      console.log(`supporter says ${data.message}`);
-      setMessages((prevState) => [
-        ...prevState,
-        { message: data.message, role: "supporter" },
-      ]);
-    });
+    socket.current.on(
+      "sent-from-supporter",
+      (data: { message: string; isToxic: boolean }) => {
+        console.log(`supporter says ${data.message}`);
+        console.log(`supporter is toxic ${data.isToxic}`);
+        setMessages((prevState) => [
+          ...prevState,
+          { message: data.message, role: "supporter" },
+        ]);
+      }
+    );
   }, []);
 
   const sendMessage = (message: string) => {
@@ -88,9 +100,20 @@ const Hero = () => {
     setMessages((prevState) => [...prevState, { message, role: "seeker" }]);
   };
 
+  const onDisconnectHandler = () => {
+    console.log("on disconnect", supporterId);
+    socket.current.emit("close-room", { otherUser: supporterId });
+    window.location.pathname = "/";
+  };
+
   return (
     <div>
-      <Room myName={myName} isWaiting={isWaiting} role="seeker">
+      <Room
+        myName={myName}
+        role="seeker"
+        isWaiting={isWaiting}
+        onDisconnect={onDisconnectHandler}
+      >
         {isWaiting ? (
           <Spinner />
         ) : (

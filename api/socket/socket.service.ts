@@ -2,6 +2,8 @@ import { verify } from "jsonwebtoken";
 import { promisify } from "util";
 import { CacheService } from "../services/redis.service";
 import { database, redisUserSchema } from "./socket.schema";
+import * as toxicity from "@tensorflow-models/toxicity";
+
 export const getUserIdentity = (token: string) => {
   const identity = verify(token, process.env.JWT_SECRET!);
   return identity;
@@ -9,15 +11,15 @@ export const getUserIdentity = (token: string) => {
 
 export const getMatchProfiles = async (): Promise<{
   seeker: redisUserSchema | null;
-  supporter: Array<redisUserSchema>;
+  supporters: Array<redisUserSchema>;
 }> => {
   const cache = CacheService.getInstance().getCache();
   cache.select(database.seekers);
   const seekers = await promisify(cache.keys).bind(cache)("*");
-  if (!seekers) {
+  if (seekers.length === 0) {
     return {
       seeker: null,
-      supporter: [],
+      supporters: [],
     };
   }
   const lastSeeker = (await promisify(cache.hgetall).bind(cache)(
@@ -25,10 +27,10 @@ export const getMatchProfiles = async (): Promise<{
   )) as unknown;
   cache.select(database.supporters);
   const supporters = await promisify(cache.keys).bind(cache)("*");
-  if (supporters.length == 0) {
+  if (supporters.length === 0) {
     return {
       seeker: null,
-      supporter: [],
+      supporters: [],
     };
   }
   let supporterList: any[] = [];
@@ -38,7 +40,7 @@ export const getMatchProfiles = async (): Promise<{
   await Promise.all(result);
   return {
     seeker: lastSeeker! as redisUserSchema,
-    supporter: supporterList,
+    supporters: supporterList,
   };
 };
 
@@ -73,4 +75,35 @@ export const getRoomPair = (
     seekerMatch: seeker.id,
     supporterMatch: supporters[maxCompatibilityIndex].id,
   };
+};
+
+export const isToxic = async (message: string): Promise<boolean> => {
+  const model = await toxicity.load(0.4, [
+    "identity_attack",
+    "insult",
+    "obscene",
+    "severe_toxicity",
+    "sexual_explicit",
+    "threat",
+    "toxicity",
+  ]);
+  const predictions = await model.classify([`${message}`]);
+  let flag = false;
+  predictions.forEach((e) => {
+    if (e.results[0].match === true) {
+      flag = true;
+      return;
+    }
+  });
+  return flag;
+};
+
+export const disconnect = async (firstUser: string, otherUser: string) => {
+  const cache = CacheService.getInstance().getCache();
+  cache.select(database.seekers);
+  await cache.del(firstUser);
+  await cache.del(otherUser);
+  cache.select(database.supporters);
+  await cache.del(firstUser);
+  await cache.del(otherUser);
 };

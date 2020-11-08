@@ -43,6 +43,7 @@ const Hero = () => {
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
+  let seekerId: string;
 
   // Random names generated
   const [myName, setMyName] = useState<string>(
@@ -66,14 +67,21 @@ const Hero = () => {
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { seeker: string }) => {
       console.log(data.seeker, " is seeker and want to join room");
-      socket.current.emit("join-room", data.seeker);
+      seekerId = data.seeker;
+      socket.current.emit("join-room", data.seeker, (data: boolean) => {
+        console.log("room match", data);
+        setIsWaiting(false);
+      });
     });
-    socket.current.on("send-to-supporter", (data: { message: string }) => {
+    socket.current.on("sent-from-seeker", (data: { message: string }) => {
       console.log(`seeker says ${data.message}`);
       setMessages((prevState) => [
         ...prevState,
         { message: data.message, role: "seeker" },
       ]);
+    });
+    socket.current.on("close-room", () => {
+      window.location.pathname = "/";
     });
   }, []);
 
@@ -85,9 +93,20 @@ const Hero = () => {
     setMessages((prevState) => [...prevState, { message, role: "supporter" }]);
   };
 
+  const onDisconnectHandler = () => {
+    console.log("on disconnect");
+    socket.current.emit("close-room", { otherUser: seekerId });
+    window.location.pathname = "/";
+  };
+
   return (
     <div>
-      <Room myName={myName} isWaiting={isWaiting} role="supporter">
+      <Room
+        myName={myName}
+        isWaiting={isWaiting}
+        role="supporter"
+        onDisconnect={onDisconnectHandler}
+      >
         {isWaiting ? (
           <Spinner />
         ) : (

@@ -9,7 +9,6 @@ import { errorHandler } from "./error/error.handler";
 import { SocketService } from "./services/socket.service";
 import { CacheService } from "./services/redis.service";
 import { socketController } from "./socket/socket.routes";
-import chatRoutes from "./chat/chat.routes";
 import authRoutes from "./auth/auth.routes";
 
 dotenvConfig();
@@ -19,7 +18,6 @@ const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/api/v1", chatRoutes);
 app.use("/api/v1", authRoutes);
 
 app.use(errorHandler);

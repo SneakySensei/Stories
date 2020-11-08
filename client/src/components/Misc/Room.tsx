@@ -15,6 +15,7 @@ interface RoomProps {
   role: "seeker" | "supporter";
   isWaiting: boolean;
   myName: string;
+  onDisconnect: () => void;
 }
 
 const RoomContainer = styled.div`
@@ -81,6 +82,7 @@ const Room = (props: RoomProps) => {
         <button
           disabled={props.isWaiting}
           className="button red text-background cursor-pointer"
+          onClick={props.onDisconnect}
         >
           Disconnect
         </button>
