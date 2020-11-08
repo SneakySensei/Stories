@@ -29,7 +29,7 @@ export const socketController = async (socket: socketIO.Socket) => {
         data: { role: "seeker" | "supporter"; [x: string]: string },
         callback
       ) => {
-        if (isBanned(user?.email!)) {
+        if (await isBanned(user?.email!)) {
           callback(true);
           return;
         }

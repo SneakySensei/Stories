@@ -66,7 +66,15 @@ const Hero = () => {
     tagsContext.tags.forEach((tag: any) => {
       data[tag.name] = tag.isSelected;
     });
-    socket.current.emit("waiting-room", data, () => {});
+    socket.current.emit("waiting-room", data, (isBanned: boolean) => {
+      console.log("user is banned", isBanned);
+      if (isBanned) {
+        alert(
+          "You are a banned user. Please contact support if you think we made a mistake"
+        );
+        window.location.pathname = "/";
+      }
+    });
     socket.current.on("join-room", (data: { supporter: string }) => {
       setSupporterId(data.supporter);
       console.log(data.supporter, "is a supporter want to join room");
