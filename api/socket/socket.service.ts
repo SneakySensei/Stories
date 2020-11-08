@@ -107,3 +107,21 @@ export const disconnect = async (firstUser: string, otherUser: string) => {
   await cache.del(firstUser);
   await cache.del(otherUser);
 };
+
+export const banUser = async (supporter: string) => {
+  const cache = CacheService.getInstance().getCache();
+  cache.select(database.supporters);
+  const res = await promisify(cache.hgetall).bind(cache)(supporter);
+  if (res) {
+    await cache.del(supporter);
+    cache.select(database["banned-users"]);
+    cache.hmset(res.email, res);
+  }
+};
+export const isBanned = async (email: string) => {
+  const cache = CacheService.getInstance().getCache();
+  cache.select(database["banned-users"]);
+  const user = promisify(cache.hgetall).bind(cache)(email);
+  if (!user) return false;
+  else return true;
+};
