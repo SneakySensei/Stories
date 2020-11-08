@@ -93,9 +93,6 @@ const Hero = () => {
         ]);
       }
     );
-    window.addEventListener("beforeunload", () => {
-      socket.current.emit("close-room", { otherUser: supporterId });
-    });
   }, []);
 
   const sendMessage = (message: string) => {

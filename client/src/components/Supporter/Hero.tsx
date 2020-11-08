@@ -37,11 +37,11 @@ const randomNameConfig: Config = {
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const [isWaiting, setIsWaiting] = useState<boolean>(true);
+  const [seekerId, setSeekerId] = useState<string>();
 
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
-  let seekerId: string;
 
   // Random names generated
   const [myName] = useState<string>(uniqueNamesGenerator(randomNameConfig));
@@ -68,7 +68,7 @@ const Hero = () => {
     });
     socket.current.on("join-room", (data: { seeker: string }) => {
       console.log(data.seeker, " is seeker and want to join room");
-      seekerId = data.seeker;
+      setSeekerId(data.seeker);
       socket.current.emit("join-room", data.seeker, (data: boolean) => {
         console.log("room match", data);
         setIsWaiting(false);
@@ -84,9 +84,6 @@ const Hero = () => {
     socket.current.on("close-room", () => {
       alert("You're being disconnected");
       window.location.pathname = "/";
-    });
-    window.addEventListener("beforeunload", () => {
-      socket.current.emit("close-room", { otherUser: seekerId });
     });
   }, []);
 
