@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 
 import SendIcon from "./SendIcon";
 
@@ -19,13 +19,23 @@ const Chat = (props: ChatProps) => {
   const onMessageSubmit = (e: FormEvent) => {
     e.preventDefault();
     const message = messageInputRef.current?.value;
-    props.onSubmit(message!);
-    messageInputRef.current!.value = "";
+    if (message!.trim().length > 0) {
+      props.onSubmit(message!);
+      messageInputRef.current!.value = "";
+    }
   };
 
+  useEffect(() => {
+    let chatDiv = document.getElementById("chatDiv");
+    chatDiv!.scrollTop = chatDiv!.scrollHeight;
+  }, [props]);
+
   return (
-    <div className="flex flex-col justify-end w-full h-screen bg-background">
-      <div className="flex flex-1 flex-col bg-background overflow-y-scroll">
+    <div className="chatContainer flex flex-col justify-end w-full h-full bg-background">
+      <div
+        className="flex flex-1 flex-col bg-background overflow-y-scroll"
+        id="chatDiv"
+      >
         {props.messages.map((message) => (
           <div
             key={`${message.message.substring(0, 10)}${Math.random()}`}
@@ -52,7 +62,7 @@ const Chat = (props: ChatProps) => {
         <button
           type="submit"
           onClick={onMessageSubmit}
-          className="flex h-12 w-12 p-1 rounded-full mr-4"
+          className="flex h-12 w-12 p-1 rounded-full mr-4 outline-none focus:outline-none"
         >
           <SendIcon />
         </button>

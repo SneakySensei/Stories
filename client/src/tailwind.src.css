@@ -6,8 +6,8 @@
   @apply rounded-3xl my-2 w-auto max-w-7/10 py-2 px-4;
 }
 .byYouMessage {
-  @apply bg-yellow-400 mr-5 ml-auto;
+  @apply bg-secondaryAccent mr-5 ml-auto;
 }
 .notByYouMessage {
-  @apply bg-red-400 ml-5 mr-auto;
+  @apply bg-primaryLight ml-5 mr-auto;
 }

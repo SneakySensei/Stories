@@ -19,13 +19,11 @@ interface Messages {
 
 const sampleMessages: Messages[] = [
   {
-    message:
-      "Consectetur elit dolore sunt amet ullamco pariatur culpa deserunt voluptate anim tempor reprehenderit. Exercitation dolor laborum dolore veniam dolor occaecat nisi qui est ipsum est.",
+    message: "Hi welcome to Stories!",
     role: "seeker",
   },
   {
-    message:
-      "Ad officia ullamco ipsum adipisicing pariatur anim. Ullamco exercitation voluptate dolore do pariatur dolore. Cupidatat dolor qui aliqua anim eu minim laborum anim proident.",
+    message: "Start typing and helping people.",
     role: "supporter",
   },
 ];

@@ -58,7 +58,7 @@ const Hero = () => {
         <div className="left-section">
           <div className="logo">Stories</div>
           <h1>Hi, how are you feeling today?</h1>
-          <button className="link" disabled={!isAuth}>
+          <button className="link focus:outline-none" disabled={!isAuth}>
             {isAuth ? (
               <p onClick={() => OnClickRoleHandler("supporter")}>
                 I'm feeling helpful
@@ -67,7 +67,7 @@ const Hero = () => {
               <p className="cursor-not-allowed">I'm feeling helpful</p>
             )}
           </button>
-          <button className="link" disabled={!isAuth}>
+          <button className="link focus:outline-none" disabled={!isAuth}>
             {isAuth ? (
               <p onClick={() => OnClickRoleHandler("seeker")}>
                 I need to talk to someone

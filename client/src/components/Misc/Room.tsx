@@ -20,8 +20,14 @@ interface RoomProps {
 
 const RoomContainer = styled.div`
   display: grid;
-  grid-auto-flow: column dense;
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
   overflow: hidden;
+  position: relative;
+
+  .logo {
+    display: none;
+  }
 
   .left-section {
     display: flex;
@@ -55,12 +61,77 @@ const RoomContainer = styled.div`
       background-color: #ea4335;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+
+    .logo {
+      display: block;
+      font-size: xx-large;
+      font-family: "Pacifico";
+      text-align: center;
+      color: #fff;
+      background-color: #212121;
+      position: relative;
+
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 2rem;
+        margin-left: 0.5rem;
+      }
+    }
+    .left-section {
+      position: absolute;
+      top: 3.5rem;
+      left: 0.5rem;
+      border-radius: 2rem;
+      border-top-left-radius: 0;
+      width: 90%;
+      max-width: 300px;
+      padding-bottom: 1rem;
+    }
+    .chatContainer {
+      flex: 1;
+    }
+
+    .disabled {
+      display: none;
+    }
+  }
 `;
 
 const Room = (props: RoomProps) => {
+  const [sideBar, setSideBar] = useState(false);
+
   return (
     <RoomContainer>
-      <div className="left-section bg-accent">
+      <div className="logo">
+        <svg
+          className="w-6 h-6"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+          onClick={() => {
+            setSideBar(!sideBar);
+          }}
+        >
+          <path
+            fillRule="evenodd"
+            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Stories
+      </div>
+      <div
+        className={
+          "left-section bg-accent max-w-xl" + (sideBar ? "" : " disabled")
+        }
+      >
         <BigHead />
         <div className="name">{props.myName}</div>
         <div className="role">{props.role}</div>
@@ -80,8 +151,7 @@ const Room = (props: RoomProps) => {
         )}
 
         <button
-          disabled={props.isWaiting}
-          className="button red text-background cursor-pointer"
+          className="button red text-background cursor-pointer focus:outline-none"
           onClick={props.onDisconnect}
         >
           Disconnect
