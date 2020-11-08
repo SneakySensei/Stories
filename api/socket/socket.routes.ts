@@ -81,6 +81,13 @@ export const socketController = async (socket: socketIO.Socket) => {
     await socket.on("ban-user", async (data: { supporter: string }) => {
       await banUser(data.supporter);
     });
+    await socket.on("disconnect", async () => {
+      console.log(`${socket.id} has disconnected`);
+      cache.select(database.seekers);
+      await cache.del(socket.id);
+      cache.select(database.supporters);
+      await cache.del(socket.id);
+    });
     // socket.on("callback-event", (data, callback) => {
     //   callback();
     // });
