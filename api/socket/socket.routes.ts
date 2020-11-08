@@ -87,6 +87,7 @@ export const socketController = async (socket: socketIO.Socket) => {
       await cache.del(socket.id);
       cache.select(database.supporters);
       await cache.del(socket.id);
+      socket.to(socket.id).emit("close-room");
     });
     // socket.on("callback-event", (data, callback) => {
     //   callback();
