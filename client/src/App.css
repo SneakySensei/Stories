@@ -10,3 +10,7 @@
     opacity: 1;
   }
 }
+
+.chat-msg:first-child {
+  margin-top: auto;
+}

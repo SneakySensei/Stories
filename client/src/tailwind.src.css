@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .message {
-  @apply rounded-lg my-3 w-auto max-w-7/10 py-3 px-2;
+  @apply rounded-3xl my-2 w-auto max-w-7/10 py-2 px-4;
 }
 .byYouMessage {
   @apply bg-yellow-400 mr-5 ml-auto;

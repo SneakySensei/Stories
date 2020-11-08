@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { BigHead } from "@bigheads/core";
 import {
   uniqueNamesGenerator,
@@ -13,21 +13,14 @@ import styled from "styled-components";
 interface RoomProps {
   children: React.ReactElement;
   role: "seeker" | "supporter";
+  isWaiting: boolean;
+  myName: string;
 }
-
-const randomNameConfig: Config = {
-  dictionaries: [[...colors, ...adjectives], animals],
-  length: 2,
-  separator: " ",
-  style: "capital",
-};
-
-const myName: string = uniqueNamesGenerator(randomNameConfig);
-const otherName: string = uniqueNamesGenerator(randomNameConfig);
 
 const RoomContainer = styled.div`
   display: grid;
   grid-auto-flow: column dense;
+  overflow: hidden;
 
   .left-section {
     display: flex;
@@ -68,7 +61,7 @@ const Room = (props: RoomProps) => {
     <RoomContainer>
       <div className="left-section bg-accent">
         <BigHead />
-        <div className="name">{myName}</div>
+        <div className="name">{props.myName}</div>
         <div className="role">{props.role}</div>
         {/* <h2>People currently helping</h2>
           <p>{helpers}</p>
@@ -84,9 +77,13 @@ const Room = (props: RoomProps) => {
             </div>
           </>
         )}
-        <div className="button red text-background cursor-pointer">
+
+        <button
+          disabled={props.isWaiting}
+          className="button red text-background cursor-pointer"
+        >
           Disconnect
-        </div>
+        </button>
       </div>
 
       {props.children}

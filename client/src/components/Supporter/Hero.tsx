@@ -5,7 +5,13 @@ import Room from "../Misc/Room";
 import Chat from "../Misc/Chat";
 import Spinner from "../Misc/Spinner";
 import { TagsContext } from "../../context/tagsContext";
-
+import {
+  adjectives,
+  animals,
+  colors,
+  Config,
+  uniqueNamesGenerator,
+} from "unique-names-generator";
 interface Messages {
   message: string;
   role: "seeker" | "supporter";
@@ -24,6 +30,12 @@ const sampleMessages: Messages[] = [
   },
 ];
 
+const randomNameConfig: Config = {
+  dictionaries: [[...colors, ...adjectives], animals],
+  length: 2,
+  separator: " ",
+  style: "capital",
+};
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const [isWaiting, setIsWaiting] = useState<boolean>(true);
@@ -31,6 +43,14 @@ const Hero = () => {
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
+
+  // Random names generated
+  const [myName, setMyName] = useState<string>(
+    uniqueNamesGenerator(randomNameConfig)
+  );
+  const [otherName, setOtherName] = useState<string>(
+    uniqueNamesGenerator(randomNameConfig)
+  );
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -67,7 +87,7 @@ const Hero = () => {
 
   return (
     <div>
-      <Room role="supporter">
+      <Room myName={myName} isWaiting={isWaiting} role="supporter">
         {isWaiting ? (
           <Spinner />
         ) : (

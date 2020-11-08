@@ -24,45 +24,39 @@ const Chat = (props: ChatProps) => {
   };
 
   return (
-    <div className="flex flex-wrap w-1/2 h-screen">
-      <div className="flex w-full h-screen">
-        <div className="mt-auto">
-          <div className="flex flex-wrap bg-green-500 overflow-y-scroll max-h-9/10">
-            {props.messages.map((message) => (
-              <div
-                key={`${message.message.substring(0, 10)}${Math.random()}`}
-                className="w-full flex"
-              >
-                <div
-                  className={`message ${
-                    message.role === props.role
-                      ? "byYouMessage"
-                      : "notByYouMessage"
-                  }`}
-                >
-                  {message.message}
-                </div>
-              </div>
-            ))}
-          </div>
-          <form className="flex flex-row h-1/10">
-            <input
-              type="text"
-              name="message"
-              placeholder="Start typing..."
-              className="w-full bg-baseGreen"
-              ref={messageInputRef}
-            />
-            <button
-              type="submit"
-              onClick={onMessageSubmit}
-              className="flex w-24 h-24 p-3 rounded-full bg-red-600"
+    <div className="flex flex-col justify-end w-full h-screen bg-background">
+      <div className="flex flex-1 flex-col bg-background overflow-y-scroll">
+        {props.messages.map((message) => (
+          <div
+            key={`${message.message.substring(0, 10)}${Math.random()}`}
+            className="chat-msg w-full flex"
+          >
+            <div
+              className={`message ${
+                message.role === props.role ? "byYouMessage" : "notByYouMessage"
+              }`}
             >
-              <SendIcon />
-            </button>
-          </form>
-        </div>
+              {message.message}
+            </div>
+          </div>
+        ))}
       </div>
+      <form className="flex flex-row items-center bg-accentDark h-16">
+        <input
+          type="text"
+          name="message"
+          placeholder="Start typing..."
+          className="flex-1 self-stretch rounded-full bg-accent outline-none mx-4 my-2 px-4"
+          ref={messageInputRef}
+        />
+        <button
+          type="submit"
+          onClick={onMessageSubmit}
+          className="flex h-12 w-12 p-1 rounded-full mr-4"
+        >
+          <SendIcon />
+        </button>
+      </form>
     </div>
   );
 };
