@@ -16,6 +16,7 @@ interface RoomProps {
   isWaiting: boolean;
   myName: string;
   onDisconnect: () => void;
+  onReport?: () => void;
 }
 
 const RoomContainer = styled.div`
@@ -141,7 +142,10 @@ const Room = (props: RoomProps) => {
           <p>{helpees}</p> */}
         {props.role === "seeker" && (
           <>
-            <div className="button bg-secondary text-background font-bold cursor-pointer">
+            <div
+              className="button bg-secondary text-background font-bold cursor-pointer"
+              onClick={props.onReport}
+            >
               Report
             </div>
             <div className="button bg-secondary text-background font-bold cursor-pointer">

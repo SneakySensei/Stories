@@ -5,6 +5,8 @@ import {
   getRoomPair,
   isToxic,
   disconnect,
+  banUser,
+  isBanned,
 } from "./socket.service";
 import { userIdentity, database, redisUserSchema } from "./socket.schema";
 import { CacheService } from "../services/redis.service";
@@ -23,7 +25,14 @@ export const socketController = async (socket: socketIO.Socket) => {
     });
     await socket.on(
       "waiting-room",
-      async (data: { role: "seeker" | "supporter"; [x: string]: string }) => {
+      async (
+        data: { role: "seeker" | "supporter"; [x: string]: string },
+        callback
+      ) => {
+        if (await isBanned(user?.email!)) {
+          callback(true);
+          return;
+        }
         cache.select(
           data.role === "seeker" ? database.seekers : database.supporters
         );
@@ -46,6 +55,7 @@ export const socketController = async (socket: socketIO.Socket) => {
           seeker: seekerMatch,
         });
         console.log(`${seekerMatch}::${supporterMatch} - room-match`);
+        callback(false);
       }
     );
     await socket.on("join-room", (data, callback) => {
@@ -67,6 +77,9 @@ export const socketController = async (socket: socketIO.Socket) => {
       console.log(`close-room::${socket.id}::${data.otherUser}`);
       socket.to(data.otherUser).emit("close-room");
       await disconnect(socket.id, data.otherUser);
+    });
+    await socket.on("ban-user", async (data: { supporter: string }) => {
+      await banUser(data.supporter);
     });
     // socket.on("callback-event", (data, callback) => {
     //   callback();

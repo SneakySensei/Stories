@@ -65,7 +65,15 @@ const Hero = () => {
     tagsContext.tags.forEach((tag: any) => {
       data[tag.name] = tag.isSelected;
     });
-    socket.current.emit("waiting-room", data);
+    socket.current.emit("waiting-room", data, (isBanned: boolean) => {
+      console.log("user is banned", isBanned);
+      if (isBanned) {
+        alert(
+          "You are a banned user. Please contact support if you think we made a mistake"
+        );
+        window.location.pathname = "/";
+      }
+    });
     socket.current.on("join-room", (data: { supporter: string }) => {
       setSupporterId(data.supporter);
       console.log(data.supporter, "is a supporter want to join room");
@@ -105,6 +113,14 @@ const Hero = () => {
     window.location.pathname = "/";
   };
 
+  const onReportHandler = () => {
+    console.log("on report:", supporterId);
+    socket.current.emit("ban-user", { supporter: supporterId });
+    socket.current.emit("close-room", { otherUser: supporterId });
+    alert("You have reported the 'supporter'. We apologise.");
+    window.location.pathname = "/";
+  };
+
   return (
     <div>
       <Room
@@ -112,6 +128,7 @@ const Hero = () => {
         role="seeker"
         isWaiting={isWaiting}
         onDisconnect={onDisconnectHandler}
+        onReport={onReportHandler}
       >
         {isWaiting ? (
           <Spinner />
