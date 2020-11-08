@@ -24,6 +24,8 @@ const RoomContainer = styled.div`
   }
 
   .left-section {
+    position: relative;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -67,6 +69,7 @@ const RoomContainer = styled.div`
       text-align: center;
       color: #fff;
       background-color: #212121;
+      z-index: 100;
       position: fixed;
       left: 0;
       right: 0;
