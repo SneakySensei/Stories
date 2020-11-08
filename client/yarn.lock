@@ -1142,6 +1142,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@bigheads/core@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@bigheads/core/-/core-0.3.1.tgz#b495f6d83b067ace5eb49a8bea05fd884c90ec4d"
+  integrity sha512-qI6sfKPVne0jhePjpJ6AU10S0LwZUizFpPyAEbUH1zRHfWWvCc56jQCuwP869q94I7HlFz4jBCdmjEYL4lSvJw==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -11045,6 +11050,11 @@ unique-filename@^1.1.1:
   integrity sha512-Vmp0jIp2ln35UTXuryvjzkjGdRyf9b2lTXuSYUiPmzRcl3FDtYqAwOnTJkAngD9SWhnoJzDbTKwaOrZ+STtxNQ==
   dependencies:
     unique-slug "^2.0.0"
+
+unique-names-generator@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/unique-names-generator/-/unique-names-generator-4.3.1.tgz#f61ec2290b2f865894af01afb40f3e1043bb8fa2"
+  integrity sha512-oxkKrDXbwx6I5M963SdfmMH2t8n1OIfYyzoJ25BmDeETlyWAZjTbMXwIEMiQDex4lkD2pqe+9gxDJQAB2IOfDg==
 
 unique-slug@^2.0.0:
   version "2.0.2"

@@ -10,6 +10,8 @@ module.exports = {
         background: "#F2F2F2",
         primary: "#7CB3BE",
         accent: "#DDE3E9",
+        secondary: "#93B7F7",
+        secondaryAccent: "#BCCBFF",
       },
       height: {
         "1/10": "10%",

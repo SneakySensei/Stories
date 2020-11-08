@@ -12,10 +12,10 @@ export const Landing = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     position: relative;
     background-color: #f2f2f2;
-    padding: 1rem 1rem 1rem 1rem;
+    padding: 2rem 1rem 2rem 1rem;
 
     .logo {
       font-family: "Pacifico";
@@ -29,7 +29,7 @@ export const Landing = styled.div`
 
     h1 {
       text-align: center;
-      /* margin: 8rem 0 5rem 0; */
+      margin-bottom: 3rem;
       font-size: 1.7rem;
       font-weight: bold;
       padding: 0 1rem;
@@ -40,7 +40,7 @@ export const Landing = styled.div`
       position: relative;
       z-index: 0;
       padding: 0 0.5rem;
-      /* margin-bottom: 3rem; */
+      margin-bottom: 1.5rem;
       cursor: pointer;
     }
 
@@ -67,7 +67,10 @@ export const Landing = styled.div`
   .right-section {
     position: relative;
     background: linear-gradient(220deg, #a6dce2, #72aab6);
-    height: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     svg {
       width: 100%;
@@ -91,26 +94,29 @@ export const Landing = styled.div`
     }
   }
 
-  @media screen and (max-width: 990px) {
+  @media screen and (max-width: 860px) {
     display: block;
 
     .left-section {
       position: absolute;
       left: 1rem;
       right: 1rem;
-      top: 1rem;
-      height: fit-content;
+      top: 50%;
+      transform: translateY(-50%);
       border-radius: 1rem;
-      z-index: 100;
+      z-index: 25;
       background-color: #fffe;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .link {
+        font-size: 1.3rem;
+      }
     }
 
     .right-section {
-      height: inherit;
-      .logo {
-        z-index: 1000;
-        color: #2c2c2c;
-      }
       .art {
         margin: 0 auto;
         padding: 0 1rem;
@@ -127,6 +133,7 @@ export const GoogleButton = styled.button`
   border-radius: 0.2rem;
   font-weight: bold;
   color: white;
+  margin-top: 4rem;
   cursor: pointer;
   user-select: none;
   -moz-user-select: none;
