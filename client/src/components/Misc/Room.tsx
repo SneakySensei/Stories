@@ -13,6 +13,7 @@ import styled from "styled-components";
 interface RoomProps {
   children: React.ReactElement;
   role: "seeker" | "supporter";
+  onDisconnect: () => void;
 }
 
 const randomNameConfig: Config = {
@@ -84,7 +85,10 @@ const Room = (props: RoomProps) => {
             </div>
           </>
         )}
-        <div className="button red text-background cursor-pointer">
+        <div
+          className="button red text-background cursor-pointer"
+          onClick={props.onDisconnect}
+        >
           Disconnect
         </div>
       </div>

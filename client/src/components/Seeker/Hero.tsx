@@ -27,11 +27,11 @@ const sampleMessages: Messages[] = [
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
   const [isWaiting, setIsWaiting] = useState<boolean>(true);
+  const [supporterId, setSupporterId] = useState<string>();
 
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
-  let supporterId: string;
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -46,11 +46,14 @@ const Hero = () => {
     });
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { supporter: string }) => {
-      supporterId = data.supporter;
+      setSupporterId(data.supporter);
       console.log(data.supporter, "is a supporter want to join room");
       socket.current.emit("join-room", data.supporter, (data: boolean) => {
         console.log("room match", data);
         setIsWaiting(false);
+      });
+      socket.current.on("close-room", () => {
+        window.location.pathname = "/";
       });
     });
     socket.current.on(
@@ -75,9 +78,15 @@ const Hero = () => {
     setMessages((prevState) => [...prevState, { message, role: "seeker" }]);
   };
 
+  const onDisconnectHandler = () => {
+    console.log("on disconnect", supporterId);
+    socket.current.emit("close-room", { otherUser: supporterId });
+    window.location.pathname = "/";
+  };
+
   return (
     <div>
-      <Room role="seeker">
+      <Room role="seeker" onDisconnect={onDisconnectHandler}>
         {isWaiting ? (
           <Spinner />
         ) : (

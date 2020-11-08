@@ -4,6 +4,7 @@ import {
   getMatchProfiles,
   getRoomPair,
   isToxic,
+  disconnect,
 } from "./socket.service";
 import { userIdentity, database, redisUserSchema } from "./socket.schema";
 import { CacheService } from "../services/redis.service";
@@ -61,6 +62,11 @@ export const socketController = async (socket: socketIO.Socket) => {
       socket
         .to(socket.id)
         .broadcast.emit("sent-from-supporter", { ...data, isToxic: toxic });
+    });
+    await socket.on("close-room", async (data) => {
+      console.log(`close-room::${socket.id}::${data.otherUser}`);
+      socket.to(data.otherUser).emit("close-room");
+      await disconnect(socket.id, data.otherUser);
     });
     // socket.on("callback-event", (data, callback) => {
     //   callback();

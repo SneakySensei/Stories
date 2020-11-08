@@ -31,6 +31,7 @@ const Hero = () => {
   const tagsContext = useContext(TagsContext);
 
   const socket = useRef<any>();
+  let seekerId: string;
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -46,6 +47,7 @@ const Hero = () => {
     socket.current.emit("waiting-room", data);
     socket.current.on("join-room", (data: { seeker: string }) => {
       console.log(data.seeker, " is seeker and want to join room");
+      seekerId = data.seeker;
       socket.current.emit("join-room", data.seeker, (data: boolean) => {
         console.log("room match", data);
         setIsWaiting(false);
@@ -58,6 +60,9 @@ const Hero = () => {
         { message: data.message, role: "seeker" },
       ]);
     });
+    socket.current.on("close-room", () => {
+      window.location.pathname = "/";
+    });
   }, []);
 
   const sendMessage = (message: string) => {
@@ -68,9 +73,15 @@ const Hero = () => {
     setMessages((prevState) => [...prevState, { message, role: "supporter" }]);
   };
 
+  const onDisconnectHandler = () => {
+    console.log("on disconnect");
+    socket.current.emit("close-room", { otherUser: seekerId });
+    window.location.pathname = "/";
+  };
+
   return (
     <div>
-      <Room role="supporter">
+      <Room role="supporter" onDisconnect={onDisconnectHandler}>
         {isWaiting ? (
           <Spinner />
         ) : (

@@ -97,3 +97,13 @@ export const isToxic = async (message: string): Promise<boolean> => {
   });
   return flag;
 };
+
+export const disconnect = async (firstUser: string, otherUser: string) => {
+  const cache = CacheService.getInstance().getCache();
+  cache.select(database.seekers);
+  await cache.del(firstUser);
+  await cache.del(otherUser);
+  cache.select(database.supporters);
+  await cache.del(firstUser);
+  await cache.del(otherUser);
+};
