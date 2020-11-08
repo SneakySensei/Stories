@@ -145,7 +145,10 @@ const Room = (props: RoomProps) => {
             >
               Report
             </div>
-            <div className="button bg-secondary text-background font-bold cursor-pointer">
+            <div
+              className="button bg-secondary text-background font-bold cursor-pointer"
+              onClick={() => alert("Feature coming soon...")}
+            >
               Still feeling troubled?
             </div>
           </>

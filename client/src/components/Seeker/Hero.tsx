@@ -40,7 +40,7 @@ const randomNameConfig: Config = {
 
 const Hero = () => {
   const [messages, setMessages] = useState<Messages[]>(sampleMessages);
-  const [isWaiting, setIsWaiting] = useState<boolean>(false);
+  const [isWaiting, setIsWaiting] = useState<boolean>(true);
   const [supporterId, setSupporterId] = useState<string>();
 
   const tagsContext = useContext(TagsContext);

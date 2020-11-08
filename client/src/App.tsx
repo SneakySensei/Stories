@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.css";
 import "./tailwind.css";
@@ -18,6 +18,12 @@ const App = () => {
 
   let routes = (
     <Switch>
+      <Route path="/seeker" exact>
+        <Redirect to="/" exact />
+      </Route>
+      <Route path="/supporter" exact>
+        <Redirect to="/" exact />
+      </Route>
       <Route path="/" exact component={Index} />
       <Route path="/*" exact component={NotFound} />
     </Switch>
@@ -32,7 +38,7 @@ const App = () => {
     </Switch>
   );
 
-  return isAuth ? routes : authRoutes;
+  return !isAuth ? routes : authRoutes;
 };
 
 export default App;
