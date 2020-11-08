@@ -77,7 +77,7 @@ export const getRoomPair = (
   };
 };
 
-export const getToxicity = async (message: string) => {
+export const isToxic = async (message: string): Promise<boolean> => {
   const model = await toxicity.load(0.4, [
     "identity_attack",
     "insult",
@@ -88,5 +88,12 @@ export const getToxicity = async (message: string) => {
     "toxicity",
   ]);
   const predictions = await model.classify([`${message}`]);
-  predictions.forEach((e) => {});
+  let flag = false;
+  predictions.forEach((e) => {
+    if (e.results[0].match === true) {
+      flag = true;
+      return;
+    }
+  });
+  return flag;
 };

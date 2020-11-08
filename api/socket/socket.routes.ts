@@ -3,7 +3,7 @@ import {
   getUserIdentity,
   getMatchProfiles,
   getRoomPair,
-  getToxicity,
+  isToxic,
 } from "./socket.service";
 import { userIdentity, database, redisUserSchema } from "./socket.schema";
 import { CacheService } from "../services/redis.service";
@@ -56,9 +56,11 @@ export const socketController = async (socket: socketIO.Socket) => {
       socket.to(socket.id).broadcast.emit("sent-from-seeker", data);
     });
     await socket.on("send-to-seeker", async (data: { message: string }) => {
-      await getToxicity(data.message);
+      const toxic = await isToxic(data.message);
       console.log("sent-from-supporter::", data.message);
-      socket.to(socket.id).broadcast.emit("sent-from-supporter", data);
+      socket
+        .to(socket.id)
+        .broadcast.emit("sent-from-supporter", { ...data, isToxic: toxic });
     });
     // socket.on("callback-event", (data, callback) => {
     //   callback();

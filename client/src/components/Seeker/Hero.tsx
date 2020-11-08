@@ -53,13 +53,17 @@ const Hero = () => {
         setIsWaiting(false);
       });
     });
-    socket.current.on("sent-from-supporter", (data: { message: string }) => {
-      console.log(`supporter says ${data.message}`);
-      setMessages((prevState) => [
-        ...prevState,
-        { message: data.message, role: "supporter" },
-      ]);
-    });
+    socket.current.on(
+      "sent-from-supporter",
+      (data: { message: string; isToxic: boolean }) => {
+        console.log(`supporter says ${data.message}`);
+        console.log(`supporter is toxic ${data.isToxic}`);
+        setMessages((prevState) => [
+          ...prevState,
+          { message: data.message, role: "supporter" },
+        ]);
+      }
+    );
   }, []);
 
   const sendMessage = (message: string) => {
